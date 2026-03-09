@@ -8,7 +8,16 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Barlow', sans-serif; background: #e8edf2; padding: 12px; font-size: 11px; }
 
-    /* ── TOP HEADER ── */
+    /* ── BACK BUTTON ── */
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #1a3a6b; color: white; border: none; border-radius: 4px;
+      padding: 6px 12px; font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.5px; cursor: pointer;
+      text-decoration: none; margin-bottom: 10px; transition: background 0.15s;
+    }
+    .back-btn:hover { background: #2d5aa0; }
+
     .doc-header { display: grid; grid-template-columns: 180px 1fr; border: 1.5px solid #1a3a6b; margin-bottom: 2px; background: white; }
     .logo-cell { display: flex; align-items: center; justify-content: center; border-right: 1.5px solid #1a3a6b; padding: 8px; }
     .logo-inner { text-align: center; }
@@ -23,10 +32,8 @@
     .meta-value:last-child { border-right: none; }
     .meta-value input { border: none; outline: none; font-family: 'Barlow', sans-serif; font-size: 10px; text-align: center; width: 100%; background: transparent; color: #1a3a6b; font-weight: 600; }
 
-    /* ── SECTION HEADER ── */
     .section-bar { background: #1a3a6b; color: white; text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 1px; padding: 4px; margin: 2px 0; }
 
-    /* ── INFO FIELDS ── */
     .info-row { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr; border: 1px solid #1a3a6b; background: white; margin-bottom: 2px; }
     .info-cell { border-right: 1px solid #1a3a6b; padding: 0; position: relative; }
     .info-cell:last-child { border-right: none; }
@@ -34,13 +41,11 @@
     .info-cell input[type="text"] { width: 100%; border: none; outline: none; font-family: 'Barlow', sans-serif; font-size: 11px; padding: 5px 6px; color: #222; background: white; }
     .info-cell input[type="text"]:focus { background: #f0f5ff; }
 
-    /* ── DATE FIELD ── */
     .date-wrap { display: flex; align-items: center; }
     .date-wrap input[type="text"] { flex: 1; cursor: pointer; }
     .cal-btn { background: #1a3a6b; border: none; cursor: pointer; padding: 0 7px; height: 100%; min-height: 28px; color: white; font-size: 12px; transition: background 0.15s; }
     .cal-btn:hover { background: #2d5aa0; }
 
-    /* ── CALENDAR POPUP ── */
     .cal-popup { position: absolute; z-index: 9999; background: white; border: 1.5px solid #1a3a6b; border-radius: 6px; padding: 8px; box-shadow: 0 6px 20px rgba(0,0,0,0.18); width: 210px; top: 100%; left: 0; }
     .cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
     .cal-nav { background: none; border: none; cursor: pointer; color: #1a3a6b; font-size: 16px; font-weight: 700; padding: 2px 7px; border-radius: 3px; line-height: 1; }
@@ -55,7 +60,6 @@
     .cal-day.empty { cursor: default; }
     .cal-day.empty:hover { background: none; }
 
-    /* ── MULTI-SELECT ── */
     .multi-select-wrap { padding: 3px 4px; position: relative; }
     .ms-display { border: 1px solid #b0bdd6; border-radius: 3px; padding: 3px 20px 3px 5px; min-height: 24px; cursor: pointer; background: white; font-size: 10px; color: #333; position: relative; line-height: 1.5; user-select: none; }
     .ms-display::after { content: '▾'; position: absolute; right: 4px; top: 50%; transform: translateY(-50%); color: #1a3a6b; font-size: 11px; }
@@ -69,7 +73,6 @@
     .ms-placeholder { color: #aaa; font-style: italic; font-size: 10px; }
     .tag { display: inline-block; background: #1a3a6b; color: white; border-radius: 3px; padding: 1px 5px; margin: 1px 2px; font-size: 9px; font-family: 'Barlow Condensed', sans-serif; font-weight: 600; letter-spacing: 0.3px; }
 
-    /* ── TABLE ── */
     .checklist-wrap { border: 1.5px solid #1a3a6b; background: white; overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; table-layout: fixed; }
     col.c-item { width: 36px; } col.c-device { width: 90px; } col.c-serial { width: 100px; }
@@ -90,7 +93,6 @@
     td textarea:focus { background: #eef3ff; border-radius: 2px; }
     .loading-row td { text-align: center; padding: 20px; color: #8aafd4; font-style: italic; font-family: 'Barlow Condensed', sans-serif; font-size: 13px; }
 
-    /* ── FOOTER ── */
     .footer-section { margin-top: 4px; border: 1.5px solid #1a3a6b; background: white; }
     .footer-bar { background: #1a3a6b; color: white; text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; padding: 4px; letter-spacing: 1px; }
     .footer-sigs { display: grid; grid-template-columns: 1fr 1fr 1fr; }
@@ -101,57 +103,32 @@
     .sig-name input, .sig-date input { width: 100%; border: none; border-bottom: 1px solid #aaa; outline: none; font-family: 'Barlow', sans-serif; font-size: 11px; padding: 2px 0; background: transparent; color: #222; }
     .sig-sublabel { font-size: 9px; color: #888; margin-top: 2px; text-align: center; }
 
-    /* ── BUTTONS ── */
     .btn-row { display: flex; gap: 8px; margin-top: 10px; }
     .btn-pdf { flex: 1; padding: 11px; background: #c0392b; color: white; border: none; border-radius: 4px; font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 1px; cursor: pointer; transition: background 0.2s; }
     .btn-pdf:hover { background: #a93226; }
     .btn-clear { padding: 11px 18px; background: white; color: #1a3a6b; border: 1.5px solid #1a3a6b; border-radius: 4px; font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 1px; cursor: pointer; }
     .btn-clear:hover { background: #f0f5ff; }
-    .error-msg { display: none; text-align: center; color: #9a1a1a; font-weight: 700; font-size: 12px; margin-top: 8px; padding: 8px; background: #fce8e8; border: 1px solid #d4a3a3; border-radius: 4px; }
+    .error-msg { display: none; text-align: center; font-weight: 700; font-size: 12px; margin-top: 8px; padding: 8px; border-radius: 4px; }
 
-    /* ── PRINT / PDF STYLES ── */
     @media print {
       @page { size: A3 landscape; margin: 10mm; }
-
-      /* Hide all UI chrome */
-      .btn-row, .error-msg, .cal-btn,
-      .ms-display::after, .ms-dropdown { display: none !important; }
-
+      .btn-row, .error-msg, .cal-btn, .back-btn, .ms-display::after, .ms-dropdown { display: none !important; }
       body { background: white !important; padding: 0 !important; font-size: 9px !important; }
-
-      /* Show backgrounds and borders */
       * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-
-      /* Replace inputs/textareas with plain text for clean PDF */
-      input[type="text"], textarea {
-        border: none !important; outline: none !important;
-        background: transparent !important;
-        font-family: 'Barlow', sans-serif !important;
-      }
-
-      /* Replace checkboxes with unicode symbols */
+      input[type="text"], textarea { border: none !important; outline: none !important; background: transparent !important; }
       input[type="checkbox"] { display: none !important; }
       .chk-cell::before { content: '☐'; font-size: 13px; }
       .chk-cell.checked::before { content: '☑'; font-size: 13px; color: #1a3a6b; }
-
-      /* Manpower — show selected techs as plain text */
-      .multi-select-wrap .ms-display { border: none !important; padding: 5px 6px !important; }
-
-      /* Keep table readable */
       table { font-size: 8px !important; }
-      thead tr.th-top th { font-size: 8px !important; padding: 3px 2px !important; }
-      tbody td { padding: 2px 3px !important; }
-
-      /* No page breaks inside table rows */
       tr { page-break-inside: avoid; }
-
       .checklist-wrap { overflow: visible !important; }
     }
   </style>
 </head>
 <body>
 
-<!-- HEADER -->
+<a class="back-btn" href="index.html">← Back to Dashboard</a>
+
 <div class="doc-header">
   <div class="logo-cell">
     <div class="logo-inner">
@@ -173,7 +150,6 @@
 
 <div class="section-bar">I&amp;C ROUTINE CHECKLIST</div>
 
-<!-- INFO ROW -->
 <div class="info-row">
   <div class="info-cell">
     <div class="info-cell-label">System</div>
@@ -212,7 +188,6 @@
 
 <div class="section-bar">LIST OF INSTRUMENTS</div>
 
-<!-- CHECKLIST TABLE -->
 <div class="checklist-wrap">
 <table>
   <colgroup>
@@ -241,7 +216,6 @@
 </table>
 </div>
 
-<!-- FOOTER -->
 <div class="footer-section">
   <div class="footer-bar">CERTIFICATION / SIGN-OFF</div>
   <div class="footer-sigs">
@@ -275,7 +249,6 @@
   </div>
 </div>
 
-<!-- BUTTONS -->
 <div class="btn-row">
   <button class="btn-pdf" onclick="saveAsPDF()">💾 SAVE TO DRIVE</button>
   <button class="btn-clear" onclick="clearAll()">✕ CLEAR</button>
@@ -283,20 +256,42 @@
 <div class="error-msg" id="errorMsg"></div>
 
 <script>
+// ─────────────────────────────────────────────────────────────
+// ⚠️  STEP 1: Paste your deployed Apps Script Web App URL here
+//     In Apps Script: Deploy → New Deployment → Web App
+//     Execute as: Me  |  Who has access: Anyone
+// ─────────────────────────────────────────────────────────────
+const APPS_SCRIPT_URL = 'YOUR_DEPLOYED_WEB_APP_URL_HERE';
+
+// ── FETCH HELPERS ──
+async function gasGet(action, params = {}) {
+  const qs = new URLSearchParams({ action, ...params }).toString();
+  const res = await fetch(`${APPS_SCRIPT_URL}?${qs}`);
+  const json = await res.json();
+  if (!json.ok) throw new Error(json.error || 'Unknown error');
+  return json.data;
+}
+
+async function gasPost(data) {
+  const res = await fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  const json = await res.json();
+  if (!json.ok) throw new Error(json.error || 'Unknown error');
+  return json;
+}
+
 // ── CALENDAR PICKER ──
 const calState = {};
-
 function toggleCal(inputId, calId) {
   const container = document.getElementById(calId);
   if (container.querySelector('.cal-popup')) { container.innerHTML = ''; return; }
   document.querySelectorAll('.cal-popup').forEach(p => p.remove());
-  if (!calState[calId]) {
-    const now = new Date();
-    calState[calId] = { month: now.getMonth(), year: now.getFullYear() };
-  }
+  if (!calState[calId]) { const now = new Date(); calState[calId] = { month: now.getMonth(), year: now.getFullYear() }; }
   renderCal(inputId, calId);
 }
-
 function renderCal(inputId, calId) {
   const container = document.getElementById(calId);
   const state = calState[calId];
@@ -305,116 +300,66 @@ function renderCal(inputId, calId) {
   const firstDay = new Date(state.year, state.month, 1).getDay();
   const daysInMonth = new Date(state.year, state.month + 1, 0).getDate();
   const currentVal = document.getElementById(inputId).value;
-
-  let html = `<div class="cal-popup">
-    <div class="cal-header">
-      <button class="cal-nav" onclick="moveCal('${inputId}','${calId}',-1)">&#8249;</button>
-      <span class="cal-month-label">${months[state.month]} ${state.year}</span>
-      <button class="cal-nav" onclick="moveCal('${inputId}','${calId}',1)">&#8250;</button>
-    </div>
-    <div class="cal-grid">
-      <div class="cal-day-name">Su</div><div class="cal-day-name">Mo</div>
-      <div class="cal-day-name">Tu</div><div class="cal-day-name">We</div>
-      <div class="cal-day-name">Th</div><div class="cal-day-name">Fr</div>
-      <div class="cal-day-name">Sa</div>`;
+  let html = `<div class="cal-popup"><div class="cal-header"><button class="cal-nav" onclick="moveCal('${inputId}','${calId}',-1)">&#8249;</button><span class="cal-month-label">${months[state.month]} ${state.year}</span><button class="cal-nav" onclick="moveCal('${inputId}','${calId}',1)">&#8250;</button></div><div class="cal-grid"><div class="cal-day-name">Su</div><div class="cal-day-name">Mo</div><div class="cal-day-name">Tu</div><div class="cal-day-name">We</div><div class="cal-day-name">Th</div><div class="cal-day-name">Fr</div><div class="cal-day-name">Sa</div>`;
   for (let i = 0; i < firstDay; i++) html += `<div class="cal-day empty"></div>`;
   for (let d = 1; d <= daysInMonth; d++) {
-    const mm = String(state.month+1).padStart(2,'0');
-    const dd = String(d).padStart(2,'0');
+    const mm = String(state.month+1).padStart(2,'0'), dd = String(d).padStart(2,'0');
     const dateStr = `${mm}/${dd}/${state.year}`;
-    const isToday = d===today.getDate() && state.month===today.getMonth() && state.year===today.getFullYear();
-    const isSel   = dateStr === currentVal;
-    const cls = isSel ? 'selected' : isToday ? 'today' : '';
+    const cls = dateStr === currentVal ? 'selected' : (d===today.getDate() && state.month===today.getMonth() && state.year===today.getFullYear()) ? 'today' : '';
     html += `<div class="cal-day ${cls}" onclick="pickDate('${inputId}','${calId}','${dateStr}')">${d}</div>`;
   }
   html += `</div></div>`;
   container.innerHTML = html;
 }
-
 function moveCal(inputId, calId, dir) {
   calState[calId].month += dir;
   if (calState[calId].month > 11) { calState[calId].month = 0; calState[calId].year++; }
   if (calState[calId].month < 0)  { calState[calId].month = 11; calState[calId].year--; }
   renderCal(inputId, calId);
 }
-
 function pickDate(inputId, calId, dateStr) {
   document.getElementById(inputId).value = dateStr;
   document.getElementById(calId).innerHTML = '';
 }
-
 document.addEventListener('click', function(e) {
-  if (!e.target.closest('.info-cell') && !e.target.closest('.cal-popup')) {
-    document.querySelectorAll('.cal-popup').forEach(p => p.remove());
-  }
+  if (!e.target.closest('.info-cell') && !e.target.closest('.cal-popup')) document.querySelectorAll('.cal-popup').forEach(p => p.remove());
 });
 
 // ── MULTI-SELECT ──
 let selectedTechs = [];
-
 function buildDropdown(names) {
   const dd = document.getElementById('msDropdown');
   dd.innerHTML = '';
   names.forEach(name => {
-    const div = document.createElement('div');
-    div.className = 'ms-option';
-    const cb = document.createElement('input');
-    cb.type = 'checkbox'; cb.value = name;
+    const div = document.createElement('div'); div.className = 'ms-option';
+    const cb = document.createElement('input'); cb.type = 'checkbox'; cb.value = name;
     cb.addEventListener('change', () => onTechChange(cb, div, name));
-    div.appendChild(cb);
-    div.appendChild(document.createTextNode(name));
-    div.addEventListener('click', e => {
-      if (e.target !== cb) { cb.checked = !cb.checked; cb.dispatchEvent(new Event('change')); }
-    });
+    div.appendChild(cb); div.appendChild(document.createTextNode(name));
+    div.addEventListener('click', e => { if (e.target !== cb) { cb.checked = !cb.checked; cb.dispatchEvent(new Event('change')); } });
     dd.appendChild(div);
   });
   document.getElementById('msPlaceholder').textContent = '-- Select Technician(s) --';
 }
-
-function toggleDropdown() {
-  document.getElementById('msDropdown').classList.toggle('open');
-}
-
+function toggleDropdown() { document.getElementById('msDropdown').classList.toggle('open'); }
 function onTechChange(cb, div, name) {
-  if (cb.checked) {
-    if (!selectedTechs.includes(name)) selectedTechs.push(name);
-    div.classList.add('selected');
-  } else {
-    selectedTechs = selectedTechs.filter(n => n !== name);
-    div.classList.remove('selected');
-  }
+  if (cb.checked) { if (!selectedTechs.includes(name)) selectedTechs.push(name); div.classList.add('selected'); }
+  else { selectedTechs = selectedTechs.filter(n => n !== name); div.classList.remove('selected'); }
   updateDisplay();
 }
-
 function updateDisplay() {
-  const display = document.getElementById('msDisplay');
-  const ph = document.getElementById('msPlaceholder');
+  const display = document.getElementById('msDisplay'), ph = document.getElementById('msPlaceholder');
   display.querySelectorAll('.tag').forEach(t => t.remove());
-  if (selectedTechs.length === 0) {
-    ph.style.display = 'inline';
-  } else {
-    ph.style.display = 'none';
-    selectedTechs.forEach(name => {
-      const tag = document.createElement('span');
-      tag.className = 'tag'; tag.textContent = name;
-      display.insertBefore(tag, ph);
-    });
-  }
+  if (selectedTechs.length === 0) { ph.style.display = 'inline'; }
+  else { ph.style.display = 'none'; selectedTechs.forEach(name => { const tag = document.createElement('span'); tag.className = 'tag'; tag.textContent = name; display.insertBefore(tag, ph); }); }
 }
-
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('.multi-select-wrap')) {
-    document.getElementById('msDropdown').classList.remove('open');
-  }
-});
+document.addEventListener('click', function(e) { if (!e.target.closest('.multi-select-wrap')) document.getElementById('msDropdown').classList.remove('open'); });
 
 // ── LOAD TECHNICIANS ──
-google.script.run
-  .withSuccessHandler(buildDropdown)
-  .withFailureHandler(() => buildDropdown(['Tech A','Tech B','Tech C']))
-  .getTechnicians();
+gasGet('getTechnicians')
+  .then(buildDropdown)
+  .catch(() => buildDropdown(['Tech A', 'Tech B', 'Tech C']));
 
-// ── LOAD INSTRUMENTS FROM SHEET ──
+// ── LOAD INSTRUMENTS ──
 function buildTable(instruments) {
   const tbody = document.getElementById('checklistBody');
   tbody.innerHTML = '';
@@ -436,19 +381,16 @@ function buildTable(instruments) {
       <td class="chk-cell"><input type="checkbox" onchange="this.closest('td').classList.toggle('checked',this.checked)" /></td>
       <td class="chk-cell"><input type="checkbox" onchange="this.closest('td').classList.toggle('checked',this.checked)" /></td>
       <td class="chk-cell"><input type="checkbox" onchange="this.closest('td').classList.toggle('checked',this.checked)" /></td>
-      <td><textarea placeholder="Remarks..."></textarea></td>
-    `;
+      <td><textarea placeholder="Remarks..."></textarea></td>`;
     tbody.appendChild(tr);
   });
 }
-
-google.script.run
-  .withSuccessHandler(buildTable)
-  .withFailureHandler(err => {
+gasGet('getInstruments', { sheet: 'Feedwater System' })
+  .then(buildTable)
+  .catch(err => {
     document.getElementById('checklistBody').innerHTML =
       '<tr class="loading-row"><td colspan="12" style="color:#c06010;">⚠️ Could not load: ' + err.message + '</td></tr>';
-  })
-  .getInstruments('Feedwater System');
+  });
 
 // ── GET ROW DATA ──
 function getRows() {
@@ -457,99 +399,54 @@ function getRows() {
     const inputs = tr.querySelectorAll('input[type="text"]');
     const checks = tr.querySelectorAll('input[type="checkbox"]');
     const remarks = tr.querySelector('textarea');
-    if (!inputs.length) return; // skip loading row
-    rows.push({
-      itemNo:             i + 1,
-      device:             inputs[0].value,
-      serial:             inputs[1].value,
-      meas:               inputs[2].value,
-      qty:                inputs[3].value,
-      inspectTermination: checks[0].checked,
-      retightening:       checks[1].checked,
-      cleaningDisplay:    checks[2].checked,
-      localDisplay:       checks[3].checked,
-      calibration:        checks[4].checked,
-      photoDevice:        checks[5].checked,
-      remarks:            remarks ? remarks.value : ''
-    });
+    if (!inputs.length) return;
+    rows.push({ itemNo: i+1, device: inputs[0].value, serial: inputs[1].value, meas: inputs[2].value, qty: inputs[3].value,
+      inspectTermination: checks[0].checked, retightening: checks[1].checked, cleaningDisplay: checks[2].checked,
+      localDisplay: checks[3].checked, calibration: checks[4].checked, photoDevice: checks[5].checked,
+      remarks: remarks ? remarks.value : '' });
   });
   return rows;
 }
 
 // ── SAVE TO DRIVE ──
-function saveAsPDF() {
+async function saveAsPDF() {
   document.querySelectorAll('.cal-popup').forEach(p => p.remove());
   document.getElementById('msDropdown').classList.remove('open');
-
   const data = {
-    docNo:         document.getElementById('docNo').value,
-    system:        document.getElementById('system').value,
-    dateScheduled: document.getElementById('dateScheduled').value,
-    datePerformed: document.getElementById('datePerformed').value,
-    siteLocation:  document.getElementById('siteLocation').value,
-    manpower:      selectedTechs.join(', '),
-    preparedBy:    document.getElementById('preparedBy').value,
-    preparedDate:  document.getElementById('preparedDate').value,
-    checkedBy:     document.getElementById('checkedBy').value,
-    checkedDate:   document.getElementById('checkedDate').value,
-    approvedBy:    document.getElementById('approvedBy').value,
-    approvedDate:  document.getElementById('approvedDate').value,
-    rows:          getRows()
+    docNo: document.getElementById('docNo').value, system: document.getElementById('system').value,
+    dateScheduled: document.getElementById('dateScheduled').value, datePerformed: document.getElementById('datePerformed').value,
+    siteLocation: document.getElementById('siteLocation').value, manpower: selectedTechs.join(', '),
+    preparedBy: document.getElementById('preparedBy').value, preparedDate: document.getElementById('preparedDate').value,
+    checkedBy: document.getElementById('checkedBy').value, checkedDate: document.getElementById('checkedDate').value,
+    approvedBy: document.getElementById('approvedBy').value, approvedDate: document.getElementById('approvedDate').value,
+    rows: getRows()
   };
-
   const btn = document.querySelector('.btn-pdf');
-  btn.textContent = '⏳ Saving to Drive...';
-  btn.disabled = true;
-
-  // Debug: log data to confirm it's being sent
-  console.log('Sending data to saveAsPDF:', JSON.stringify(data).substring(0, 200));
-
-  google.script.run
-    .withSuccessHandler(function(result) {
-      btn.textContent = '✅ Saved!';
-      btn.disabled = false;
-      const el = document.getElementById('errorMsg');
-      el.style.display = 'block';
-      el.style.background = '#e6f4ec';
-      el.style.border = '1px solid #a3d4b0';
-      el.style.color = '#1a7a3a';
-      el.innerHTML = '✅ PDF saved to Google Drive folder <strong>"' + result.folderName + '"</strong>!&nbsp;&nbsp;' +
-        '<a href="' + result.url + '" target="_blank" style="color:#1a3a6b;font-weight:700;">📂 Open File</a>';
-      setTimeout(() => { btn.textContent = '💾 SAVE TO DRIVE'; }, 3000);
-    })
-    .withFailureHandler(function(err) {
-      const el = document.getElementById('errorMsg');
-      el.style.display = 'block';
-      el.style.background = '#fce8e8';
-      el.style.border = '1px solid #d4a3a3';
-      el.style.color = '#9a1a1a';
-      el.textContent = '❌ Error: ' + err.message;
-      console.error('saveAsPDF error:', err);
-      btn.textContent = '💾 SAVE TO DRIVE';
-      btn.disabled = false;
-    })
-    .saveAsPDF(data);
+  btn.textContent = '⏳ Saving to Drive...'; btn.disabled = true;
+  try {
+    const result = await gasPost(data);
+    btn.textContent = '✅ Saved!'; btn.disabled = false;
+    const el = document.getElementById('errorMsg');
+    el.style.cssText = 'display:block;background:#e6f4ec;border:1px solid #a3d4b0;color:#1a7a3a;';
+    el.innerHTML = '✅ PDF saved to Google Drive folder <strong>"' + result.folderName + '"</strong>!&nbsp;&nbsp;<a href="' + result.url + '" target="_blank" style="color:#1a3a6b;font-weight:700;">📂 Open File</a>';
+    setTimeout(() => { btn.textContent = '💾 SAVE TO DRIVE'; }, 3000);
+  } catch (err) {
+    const el = document.getElementById('errorMsg');
+    el.style.cssText = 'display:block;background:#fce8e8;border:1px solid #d4a3a3;color:#9a1a1a;';
+    el.textContent = '❌ Error: ' + err.message;
+    btn.textContent = '💾 SAVE TO DRIVE'; btn.disabled = false;
+  }
 }
 
 // ── CLEAR ──
 function clearAll() {
-  document.querySelectorAll('#checklistBody input[type="checkbox"]').forEach(c => {
-    c.checked = false;
-    c.closest('td').classList.remove('checked');
-  });
+  document.querySelectorAll('#checklistBody input[type="checkbox"]').forEach(c => { c.checked = false; c.closest('td').classList.remove('checked'); });
   document.querySelectorAll('#checklistBody textarea').forEach(t => t.value = '');
-  ['docNo','dateScheduled','datePerformed','preparedBy','preparedDate',
-   'checkedBy','checkedDate','approvedBy','approvedDate'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = '';
-  });
+  ['docNo','dateScheduled','datePerformed','preparedBy','preparedDate','checkedBy','checkedDate','approvedBy','approvedDate'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   document.getElementById('calSched').innerHTML = '';
   document.getElementById('calPerf').innerHTML = '';
   selectedTechs = [];
-  document.querySelectorAll('.ms-option input[type="checkbox"]').forEach(cb => {
-    cb.checked = false;
-    cb.closest('.ms-option').classList.remove('selected');
-  });
+  document.querySelectorAll('.ms-option input[type="checkbox"]').forEach(cb => { cb.checked = false; cb.closest('.ms-option').classList.remove('selected'); });
   updateDisplay();
   document.getElementById('errorMsg').style.display = 'none';
 }
