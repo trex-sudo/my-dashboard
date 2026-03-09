@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8"/>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: #edf0f5;
+      min-height: 100vh;
+    }
+
+    /* ── TOP NAV BAR ── */
+    .topbar {
+      background: #0f2547;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 54px;
+      border-bottom: 3px solid #2463b0;
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    }
+    .topbar-left {
+      display: flex; align-items: center; gap: 14px;
+    }
+    .topbar-logo {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px; font-weight: 800;
+      color: white; letter-spacing: 1px;
+      line-height: 1;
+    }
+    .topbar-logo span {
+      display: block; font-size: 8px;
+      font-weight: 400; letter-spacing: 3px;
+      color: #8aafd4; margin-top: 1px;
+    }
+    .topbar-divider {
+      width: 1px; height: 28px;
+      background: #2463b0;
+    }
+    .topbar-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px; font-weight: 600;
+      color: #c5d8f0; letter-spacing: 0.5px;
+    }
+    .topbar-right {
+      font-size: 11px; color: #8aafd4;
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: 0.5px;
+    }
+    #liveClock { color: #c5d8f0; font-weight: 600; }
+
+    /* ── PAGE WRAPPER ── */
+    .page { padding: 20px 24px 40px; }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      display: flex; align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid #c8d3e8;
+    }
+    .page-header-left h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px; font-weight: 800;
+      color: #0f2547; letter-spacing: 0.5px;
+    }
+    .page-header-left p {
+      font-size: 11px; color: #7a8aaa;
+      margin-top: 3px; font-weight: 400;
+    }
+    .search-wrap {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .search-box {
+      border: 1.5px solid #c0cbde;
+      border-radius: 4px; padding: 6px 10px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 11px; color: #333;
+      background: white; outline: none;
+      width: 200px;
+    }
+    .search-box:focus { border-color: #2463b0; }
+    .filter-btn {
+      padding: 6px 12px;
+      background: #0f2547; color: white;
+      border: none; border-radius: 4px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px; font-weight: 600;
+      letter-spacing: 0.5px; cursor: pointer;
+    }
+    .filter-btn:hover { background: #2463b0; }
+
+    /* ── CATEGORY FILTER PILLS ── */
+    .filter-row {
+      display: flex; gap: 6px; flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .pill {
+      padding: 4px 14px;
+      border-radius: 20px; font-size: 10px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; letter-spacing: 0.5px;
+      cursor: pointer; border: 1.5px solid transparent;
+      transition: all 0.15s;
+      text-transform: uppercase;
+    }
+    .pill.active {
+      background: #0f2547; color: white;
+      border-color: #0f2547;
+    }
+    .pill:not(.active) {
+      background: white; color: #0f2547;
+      border-color: #c0cbde;
+    }
+    .pill:hover:not(.active) { border-color: #2463b0; color: #2463b0; }
+
+    /* ── CARDS GRID ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: white;
+      border: 1.5px solid #dce4f0;
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+      position: relative;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(15,37,71,0.13);
+      border-color: #2463b0;
+    }
+    .card-accent {
+      height: 4px;
+      background: #1a3a6b;
+    }
+    .card-accent.green  { background: #1a7a3a; }
+    .card-accent.red    { background: #9a1a1a; }
+    .card-accent.orange { background: #c06010; }
+    .card-accent.teal   { background: #0a6a7a; }
+    .card-accent.purple { background: #5a1a8a; }
+
+    .card-body { padding: 14px 14px 10px; }
+
+    .card-category {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      margin-bottom: 6px;
+      color: #8aafd4;
+    }
+    .card-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px; font-weight: 700;
+      color: #0f2547; line-height: 1.3;
+      margin-bottom: 5px;
+    }
+    .card-desc {
+      font-size: 10px; color: #7a8aaa;
+      line-height: 1.4; font-weight: 400;
+    }
+
+    .card-footer {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 8px 14px 10px;
+      border-top: 1px solid #eef1f8;
+      margin-top: 10px;
+    }
+    .card-doc-id {
+      font-size: 9px; color: #aab5cc;
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: 0.3px;
+    }
+    .card-open-btn {
+      background: #0f2547; color: white;
+      border: none; border-radius: 3px;
+      padding: 4px 10px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.5px; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .card-open-btn:hover { background: #2463b0; }
+
+    .card-badge {
+      position: absolute; top: 10px; right: 10px;
+      background: #e8effc; color: #2463b0;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 8px; font-weight: 700;
+      padding: 2px 6px; border-radius: 10px;
+      letter-spacing: 0.5px; text-transform: uppercase;
+    }
+    .card-badge.new { background: #e6f4ec; color: #1a7a3a; }
+    .card-badge.wip { background: #fff5e6; color: #c06010; }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px; font-weight: 700;
+      color: #7a8aaa; letter-spacing: 2px;
+      text-transform: uppercase;
+      margin: 20px 0 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-label::after {
+      content: ''; flex: 1; height: 1px;
+      background: #dce4f0;
+    }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      display: none; text-align: center;
+      padding: 40px; color: #aab5cc;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px; letter-spacing: 0.5px;
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 10px; margin-bottom: 18px;
+    }
+    .stat-card {
+      background: white; border: 1.5px solid #dce4f0;
+      border-radius: 6px; padding: 10px 14px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .stat-icon {
+      font-size: 20px; line-height: 1;
+    }
+    .stat-info {}
+    .stat-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 20px; font-weight: 800;
+      color: #0f2547; line-height: 1;
+    }
+    .stat-label {
+      font-size: 9px; color: #7a8aaa;
+      text-transform: uppercase; letter-spacing: 1px;
+      margin-top: 2px; font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── TOP NAV ── -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-logo">
+      DMCI
+      <span>POWER CORPORATION</span>
+    </div>
+    <div class="topbar-divider"></div>
+    <div class="topbar-title">Maintenance Forms Portal</div>
+  </div>
+  <div class="topbar-right">
+    <span id="liveClock"></span> &nbsp;|&nbsp; Narra Thermal Power Plant
+  </div>
+</div>
+
+<!-- ── PAGE ── -->
+<div class="page">
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-icon">📋</div>
+      <div class="stat-info">
+        <div class="stat-value" id="statTotal">1</div>
+        <div class="stat-label">Total Forms</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">⚙️</div>
+      <div class="stat-info">
+        <div class="stat-value">I&amp;C</div>
+        <div class="stat-label">Department</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">📍</div>
+      <div class="stat-info">
+        <div class="stat-value">NTP</div>
+        <div class="stat-label">Site</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">📅</div>
+      <div class="stat-info">
+        <div class="stat-value" id="statYear">—</div>
+        <div class="stat-label">Current Year</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-header-left">
+      <h1>Maintenance Data Sheet Forms</h1>
+      <p>Select a form below to open and fill it in</p>
+    </div>
+    <div class="search-wrap">
+      <input class="search-box" id="searchInput" type="text" placeholder="🔍  Search forms..." oninput="filterCards()" />
+    </div>
+  </div>
+
+  <!-- Filter Pills -->
+  <div class="filter-row" id="filterRow">
+    <div class="pill active" onclick="setPill(this,'all')">All</div>
+    <div class="pill" onclick="setPill(this,'routine')">Routine</div>
+    <div class="pill" onclick="setPill(this,'preventive')">Preventive</div>
+    <div class="pill" onclick="setPill(this,'corrective')">Corrective</div>
+    <div class="pill" onclick="setPill(this,'calibration')">Calibration</div>
+    <div class="pill" onclick="setPill(this,'inspection')">Inspection</div>
+  </div>
+
+  <!-- ── ACTIVE FORMS ── -->
+  <div class="section-label">Available Forms</div>
+  <div class="cards-grid" id="cardsGrid">
+
+    <!-- ✅ CARD 1 — I&C Routine Checklist (already built) -->
+    <div class="card" data-category="routine" data-title="I&C Routine Checklist Feedwater System">
+      <div class="card-accent"></div>
+      <div class="card-badge new">Ready</div>
+      <div class="card-body">
+        <div class="card-category">Routine Checklist</div>
+        <div class="card-title">I&amp;C Routine Checklist — Feedwater System</div>
+        <div class="card-desc">Instrument inspection, calibration, and local display verification for feedwater system devices.</div>
+      </div>
+      <div class="card-footer">
+        <div class="card-doc-id">DPCP-MAINT-I&amp;C-RC-FW</div>
+        <button class="card-open-btn" onclick="openForm('showFeedwaterForm')">OPEN →</button>
+      </div>
+    </div>
+
+    <!-- 🔲 PLACEHOLDER CARDS — add your future forms here -->
+    <div class="card" data-category="routine" data-title="I&C Routine Checklist Boiler System">
+      <div class="card-accent"></div>
+      <div class="card-badge wip">Coming Soon</div>
+      <div class="card-body">
+        <div class="card-category">Routine Checklist</div>
+        <div class="card-title">I&amp;C Routine Checklist — Boiler System</div>
+        <div class="card-desc">Routine inspection checklist for boiler system instruments and control devices.</div>
+      </div>
+      <div class="card-footer">
+        <div class="card-doc-id">DPCP-MAINT-I&amp;C-RC-BLR</div>
+        <button class="card-open-btn" style="background:#aab5cc;cursor:not-allowed;">SOON</button>
+      </div>
+    </div>
+
+    <div class="card" data-category="preventive" data-title="Preventive Maintenance Turbine">
+      <div class="card-accent green"></div>
+      <div class="card-badge wip">Coming Soon</div>
+      <div class="card-body">
+        <div class="card-category">Preventive Maintenance</div>
+        <div class="card-title">PM Checklist — Turbine Controls</div>
+        <div class="card-desc">Scheduled preventive maintenance for turbine control instruments and protection devices.</div>
+      </div>
+      <div class="card-footer">
+        <div class="card-doc-id">DPCP-MAINT-PM-TRB</div>
+        <button class="card-open-btn" style="background:#aab5cc;cursor:not-allowed;">SOON</button>
+      </div>
+    </div>
+
+    <div class="card" data-category="calibration" data-title="Calibration Record Sheet">
+      <div class="card-accent teal"></div>
+      <div class="card-badge wip">Coming Soon</div>
+      <div class="card-body">
+        <div class="card-category">Calibration</div>
+        <div class="card-title">Calibration Record Sheet</div>
+        <div class="card-desc">Record of instrument calibration activities, as-found and as-left values, and test equipment used.</div>
+      </div>
+      <div class="card-footer">
+        <div class="card-doc-id">DPCP-MAINT-CAL-REC</div>
+        <button class="card-open-btn" style="background:#aab5cc;cursor:not-allowed;">SOON</button>
+      </div>
+    </div>
+
+    <div class="card" data-category="inspection" data-title="Loop Test Verification Sheet">
+      <div class="card-accent orange"></div>
+      <div class="card-badge wip">Coming Soon</div>
+      <div class="card-body">
+        <div class="card-category">Inspection</div>
+        <div class="card-title">Loop Test Verification Sheet</div>
+        <div class="card-desc">End-to-end loop testing and signal verification for control loops and alarm systems.</div>
+      </div>
+      <div class="card-footer">
+        <div class="card-doc-id">DPCP-MAINT-LT-VER</div>
+        <button class="card-open-btn" style="background:#aab5cc;cursor:not-allowed;">SOON</button>
+      </div>
+    </div>
+
+    <div class="card" data-category="corrective" data-title="Corrective Maintenance Work Order">
+      <div class="card-accent red"></div>
+      <div class="card-badge wip">Coming Soon</div>
+      <div class="card-body">
+        <div class="card-category">Corrective Maintenance</div>
+        <div class="card-title">Corrective Maintenance Work Order</div>
+        <div class="card-desc">Documentation for corrective actions taken on failed or defective instruments and equipment.</div>
+      </div>
+      <div class="card-footer">
+        <div class="card-doc-id">DPCP-MAINT-CM-WO</div>
+        <button class="card-open-btn" style="background:#aab5cc;cursor:not-allowed;">SOON</button>
+      </div>
+    </div>
+
+    <div class="card" data-category="preventive" data-title="Preventive Maintenance Pressure Transmitters">
+      <div class="card-accent green"></div>
+      <div class="card-badge wip">Coming Soon</div>
+      <div class="card-body">
+        <div class="card-category">Preventive Maintenance</div>
+        <div class="card-title">PM Checklist — Pressure Transmitters</div>
+        <div class="card-desc">Scheduled maintenance and inspection for pressure transmitters across all systems.</div>
+      </div>
+      <div class="card-footer">
+        <div class="card-doc-id">DPCP-MAINT-PM-PT</div>
+        <button class="card-open-btn" style="background:#aab5cc;cursor:not-allowed;">SOON</button>
+      </div>
+    </div>
+
+    <div class="card" data-category="inspection" data-title="Instrument Air System Inspection">
+      <div class="card-accent orange"></div>
+      <div class="card-badge wip">Coming Soon</div>
+      <div class="card-body">
+        <div class="card-category">Inspection</div>
+        <div class="card-title">Instrument Air System Inspection</div>
+        <div class="card-desc">Inspection of instrument air headers, filters, regulators, and distribution tubing.</div>
+      </div>
+      <div class="card-footer">
+        <div class="card-doc-id">DPCP-MAINT-IA-INS</div>
+        <button class="card-open-btn" style="background:#aab5cc;cursor:not-allowed;">SOON</button>
+      </div>
+    </div>
+
+    <div class="card" data-category="calibration" data-title="Control Valve Stroke Test">
+      <div class="card-accent teal"></div>
+      <div class="card-badge wip">Coming Soon</div>
+      <div class="card-body">
+        <div class="card-category">Calibration</div>
+        <div class="card-title">Control Valve Stroke Test</div>
+        <div class="card-desc">Stroke testing and positioner calibration records for control valves and actuators.</div>
+      </div>
+      <div class="card-footer">
+        <div class="card-doc-id">DPCP-MAINT-CV-STK</div>
+        <button class="card-open-btn" style="background:#aab5cc;cursor:not-allowed;">SOON</button>
+      </div>
+    </div>
+
+    <div class="card" data-category="routine" data-title="DCS IO Check Routine">
+      <div class="card-accent purple"></div>
+      <div class="card-badge wip">Coming Soon</div>
+      <div class="card-body">
+        <div class="card-category">Routine Checklist</div>
+        <div class="card-title">DCS I/O Check — Routine</div>
+        <div class="card-desc">Routine I/O signal verification and health check for DCS cards and field connections.</div>
+      </div>
+      <div class="card-footer">
+        <div class="card-doc-id">DPCP-MAINT-DCS-IO</div>
+        <button class="card-open-btn" style="background:#aab5cc;cursor:not-allowed;">SOON</button>
+      </div>
+    </div>
+
+  </div>
+  <div class="empty-state" id="emptyState">No forms match your search.</div>
+
+</div>
+
+<script>
+  // ── LIVE CLOCK ──
+  function updateClock() {
+    const now = new Date();
+    document.getElementById('liveClock').textContent =
+      now.toLocaleDateString('en-PH', { weekday:'short', month:'short', day:'numeric', year:'numeric' }) +
+      '  ' + now.toLocaleTimeString('en-PH', { hour:'2-digit', minute:'2-digit' });
+    document.getElementById('statYear').textContent = now.getFullYear();
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  // ── STATS ──
+  const totalReady = document.querySelectorAll('.card-badge.new').length;
+  document.getElementById('statTotal').textContent = document.querySelectorAll('.card').length;
+
+  // ── FILTER PILLS ──
+  let activeCategory = 'all';
+  function setPill(el, cat) {
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    activeCategory = cat;
+    filterCards();
+  }
+
+  // ── SEARCH + FILTER ──
+  function filterCards() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const cards = document.querySelectorAll('.card');
+    let visible = 0;
+    cards.forEach(card => {
+      const title = card.dataset.title.toLowerCase();
+      const cat   = card.dataset.category;
+      const matchSearch = title.includes(query);
+      const matchCat    = activeCategory === 'all' || cat === activeCategory;
+      if (matchSearch && matchCat) {
+        card.style.display = ''; visible++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+    document.getElementById('emptyState').style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  // ── OPEN FORM ──
+  // Each button calls its own Apps Script function
+  function openForm(fnName) {
+    google.script.run[fnName]();
+  }
+</script>
+</body>
+</html>
