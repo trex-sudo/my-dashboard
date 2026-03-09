@@ -25,34 +25,24 @@
       position: sticky; top: 0; z-index: 100;
       box-shadow: 0 2px 12px rgba(0,0,0,0.3);
     }
-    .topbar-left {
-      display: flex; align-items: center; gap: 14px;
-    }
+    .topbar-left { display: flex; align-items: center; gap: 14px; }
     .topbar-logo {
       font-family: 'Barlow Condensed', sans-serif;
       font-size: 22px; font-weight: 800;
-      color: white; letter-spacing: 1px;
-      line-height: 1;
+      color: white; letter-spacing: 1px; line-height: 1;
     }
     .topbar-logo span {
       display: block; font-size: 8px;
       font-weight: 400; letter-spacing: 3px;
       color: #8aafd4; margin-top: 1px;
     }
-    .topbar-divider {
-      width: 1px; height: 28px;
-      background: #2463b0;
-    }
+    .topbar-divider { width: 1px; height: 28px; background: #2463b0; }
     .topbar-title {
       font-family: 'Barlow Condensed', sans-serif;
       font-size: 15px; font-weight: 600;
       color: #c5d8f0; letter-spacing: 0.5px;
     }
-    .topbar-right {
-      font-size: 11px; color: #8aafd4;
-      font-family: 'Barlow Condensed', sans-serif;
-      letter-spacing: 0.5px;
-    }
+    .topbar-right { font-size: 11px; color: #8aafd4; font-family: 'Barlow Condensed', sans-serif; letter-spacing: 0.5px; }
     #liveClock { color: #c5d8f0; font-weight: 600; }
 
     /* ── PAGE WRAPPER ── */
@@ -62,8 +52,7 @@
     .page-header {
       display: flex; align-items: flex-end;
       justify-content: space-between;
-      margin-bottom: 18px;
-      padding-bottom: 14px;
+      margin-bottom: 18px; padding-bottom: 14px;
       border-bottom: 2px solid #c8d3e8;
     }
     .page-header-left h1 {
@@ -71,188 +60,83 @@
       font-size: 22px; font-weight: 800;
       color: #0f2547; letter-spacing: 0.5px;
     }
-    .page-header-left p {
-      font-size: 11px; color: #7a8aaa;
-      margin-top: 3px; font-weight: 400;
-    }
-    .search-wrap {
-      display: flex; align-items: center; gap: 8px;
-    }
+    .page-header-left p { font-size: 11px; color: #7a8aaa; margin-top: 3px; font-weight: 400; }
+    .search-wrap { display: flex; align-items: center; gap: 8px; }
     .search-box {
-      border: 1.5px solid #c0cbde;
-      border-radius: 4px; padding: 6px 10px;
-      font-family: 'Barlow', sans-serif;
-      font-size: 11px; color: #333;
-      background: white; outline: none;
-      width: 200px;
+      border: 1.5px solid #c0cbde; border-radius: 4px; padding: 6px 10px;
+      font-family: 'Barlow', sans-serif; font-size: 11px; color: #333;
+      background: white; outline: none; width: 200px;
     }
     .search-box:focus { border-color: #2463b0; }
-    .filter-btn {
-      padding: 6px 12px;
-      background: #0f2547; color: white;
-      border: none; border-radius: 4px;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 12px; font-weight: 600;
-      letter-spacing: 0.5px; cursor: pointer;
-    }
-    .filter-btn:hover { background: #2463b0; }
 
     /* ── CATEGORY FILTER PILLS ── */
-    .filter-row {
-      display: flex; gap: 6px; flex-wrap: wrap;
-      margin-bottom: 16px;
-    }
+    .filter-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
     .pill {
-      padding: 4px 14px;
-      border-radius: 20px; font-size: 10px;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 700; letter-spacing: 0.5px;
-      cursor: pointer; border: 1.5px solid transparent;
-      transition: all 0.15s;
-      text-transform: uppercase;
+      padding: 4px 14px; border-radius: 20px; font-size: 10px;
+      font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+      letter-spacing: 0.5px; cursor: pointer; border: 1.5px solid transparent;
+      transition: all 0.15s; text-transform: uppercase;
     }
-    .pill.active {
-      background: #0f2547; color: white;
-      border-color: #0f2547;
-    }
-    .pill:not(.active) {
-      background: white; color: #0f2547;
-      border-color: #c0cbde;
-    }
+    .pill.active { background: #0f2547; color: white; border-color: #0f2547; }
+    .pill:not(.active) { background: white; color: #0f2547; border-color: #c0cbde; }
     .pill:hover:not(.active) { border-color: #2463b0; color: #2463b0; }
 
     /* ── CARDS GRID ── */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 14px;
-    }
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
 
     /* ── CARD ── */
     .card {
-      background: white;
-      border: 1.5px solid #dce4f0;
-      border-radius: 6px;
-      overflow: hidden;
-      cursor: pointer;
+      background: white; border: 1.5px solid #dce4f0; border-radius: 6px;
+      overflow: hidden; cursor: pointer;
       transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
       position: relative;
     }
-    .card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 24px rgba(15,37,71,0.13);
-      border-color: #2463b0;
-    }
-    .card-accent {
-      height: 4px;
-      background: #1a3a6b;
-    }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(15,37,71,0.13); border-color: #2463b0; }
+    .card-accent { height: 4px; background: #1a3a6b; }
     .card-accent.green  { background: #1a7a3a; }
     .card-accent.red    { background: #9a1a1a; }
     .card-accent.orange { background: #c06010; }
     .card-accent.teal   { background: #0a6a7a; }
     .card-accent.purple { background: #5a1a8a; }
-
     .card-body { padding: 14px 14px 10px; }
-
-    .card-category {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 9px; font-weight: 700;
-      letter-spacing: 1.5px; text-transform: uppercase;
-      margin-bottom: 6px;
-      color: #8aafd4;
-    }
-    .card-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 14px; font-weight: 700;
-      color: #0f2547; line-height: 1.3;
-      margin-bottom: 5px;
-    }
-    .card-desc {
-      font-size: 10px; color: #7a8aaa;
-      line-height: 1.4; font-weight: 400;
-    }
-
-    .card-footer {
-      display: flex; align-items: center;
-      justify-content: space-between;
-      padding: 8px 14px 10px;
-      border-top: 1px solid #eef1f8;
-      margin-top: 10px;
-    }
-    .card-doc-id {
-      font-size: 9px; color: #aab5cc;
-      font-family: 'Barlow Condensed', sans-serif;
-      letter-spacing: 0.3px;
-    }
+    .card-category { font-family: 'Barlow Condensed', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; color: #8aafd4; }
+    .card-title { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; color: #0f2547; line-height: 1.3; margin-bottom: 5px; }
+    .card-desc { font-size: 10px; color: #7a8aaa; line-height: 1.4; font-weight: 400; }
+    .card-footer { display: flex; align-items: center; justify-content: space-between; padding: 8px 14px 10px; border-top: 1px solid #eef1f8; margin-top: 10px; }
+    .card-doc-id { font-size: 9px; color: #aab5cc; font-family: 'Barlow Condensed', sans-serif; letter-spacing: 0.3px; }
     .card-open-btn {
-      background: #0f2547; color: white;
-      border: none; border-radius: 3px;
-      padding: 4px 10px;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 10px; font-weight: 700;
-      letter-spacing: 0.5px; cursor: pointer;
-      transition: background 0.15s;
+      background: #0f2547; color: white; border: none; border-radius: 3px;
+      padding: 4px 10px; font-family: 'Barlow Condensed', sans-serif;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.5px; cursor: pointer;
+      transition: background 0.15s; text-decoration: none; display: inline-block;
     }
     .card-open-btn:hover { background: #2463b0; }
-
     .card-badge {
       position: absolute; top: 10px; right: 10px;
       background: #e8effc; color: #2463b0;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 8px; font-weight: 700;
-      padding: 2px 6px; border-radius: 10px;
-      letter-spacing: 0.5px; text-transform: uppercase;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 8px; font-weight: 700;
+      padding: 2px 6px; border-radius: 10px; letter-spacing: 0.5px; text-transform: uppercase;
     }
     .card-badge.new { background: #e6f4ec; color: #1a7a3a; }
     .card-badge.wip { background: #fff5e6; color: #c06010; }
 
     /* ── SECTION LABEL ── */
     .section-label {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 11px; font-weight: 700;
-      color: #7a8aaa; letter-spacing: 2px;
-      text-transform: uppercase;
-      margin: 20px 0 10px;
-      display: flex; align-items: center; gap: 8px;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700;
+      color: #7a8aaa; letter-spacing: 2px; text-transform: uppercase;
+      margin: 20px 0 10px; display: flex; align-items: center; gap: 8px;
     }
-    .section-label::after {
-      content: ''; flex: 1; height: 1px;
-      background: #dce4f0;
-    }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: #dce4f0; }
 
     /* ── EMPTY STATE ── */
-    .empty-state {
-      display: none; text-align: center;
-      padding: 40px; color: #aab5cc;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 14px; letter-spacing: 0.5px;
-    }
+    .empty-state { display: none; text-align: center; padding: 40px; color: #aab5cc; font-family: 'Barlow Condensed', sans-serif; font-size: 14px; letter-spacing: 0.5px; }
 
     /* ── STATS BAR ── */
-    .stats-bar {
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 10px; margin-bottom: 18px;
-    }
-    .stat-card {
-      background: white; border: 1.5px solid #dce4f0;
-      border-radius: 6px; padding: 10px 14px;
-      display: flex; align-items: center; gap: 10px;
-    }
-    .stat-icon {
-      font-size: 20px; line-height: 1;
-    }
-    .stat-info {}
-    .stat-value {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 20px; font-weight: 800;
-      color: #0f2547; line-height: 1;
-    }
-    .stat-label {
-      font-size: 9px; color: #7a8aaa;
-      text-transform: uppercase; letter-spacing: 1px;
-      margin-top: 2px; font-weight: 600;
-    }
+    .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
+    .stat-card { background: white; border: 1.5px solid #dce4f0; border-radius: 6px; padding: 10px 14px; display: flex; align-items: center; gap: 10px; }
+    .stat-icon { font-size: 20px; line-height: 1; }
+    .stat-value { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 800; color: #0f2547; line-height: 1; }
+    .stat-label { font-size: 9px; color: #7a8aaa; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; font-weight: 600; }
   </style>
 </head>
 <body>
@@ -260,10 +144,7 @@
 <!-- ── TOP NAV ── -->
 <div class="topbar">
   <div class="topbar-left">
-    <div class="topbar-logo">
-      DMCI
-      <span>POWER CORPORATION</span>
-    </div>
+    <div class="topbar-logo">DMCI<span>POWER CORPORATION</span></div>
     <div class="topbar-divider"></div>
     <div class="topbar-title">Maintenance Forms Portal</div>
   </div>
@@ -280,7 +161,7 @@
     <div class="stat-card">
       <div class="stat-icon">📋</div>
       <div class="stat-info">
-        <div class="stat-value" id="statTotal">1</div>
+        <div class="stat-value" id="statTotal">10</div>
         <div class="stat-label">Total Forms</div>
       </div>
     </div>
@@ -332,7 +213,7 @@
   <div class="section-label">Available Forms</div>
   <div class="cards-grid" id="cardsGrid">
 
-    <!-- ✅ CARD 1 — I&C Routine Checklist (already built) -->
+    <!-- ✅ CARD 1 — I&C Routine Checklist (Ready) -->
     <div class="card" data-category="routine" data-title="I&C Routine Checklist Feedwater System">
       <div class="card-accent"></div>
       <div class="card-badge new">Ready</div>
@@ -343,11 +224,12 @@
       </div>
       <div class="card-footer">
         <div class="card-doc-id">DPCP-MAINT-I&amp;C-RC-FW</div>
-        <button class="card-open-btn" onclick="openForm('showFeedwaterForm')">OPEN →</button>
+        <!-- ✅ Direct link to form.html — works on GitHub Pages -->
+        <a class="card-open-btn" href="form.html">OPEN →</a>
       </div>
     </div>
 
-    <!-- 🔲 PLACEHOLDER CARDS — add your future forms here -->
+    <!-- 🔲 PLACEHOLDER CARDS -->
     <div class="card" data-category="routine" data-title="I&C Routine Checklist Boiler System">
       <div class="card-accent"></div>
       <div class="card-badge wip">Coming Soon</div>
@@ -491,10 +373,6 @@
   updateClock();
   setInterval(updateClock, 1000);
 
-  // ── STATS ──
-  const totalReady = document.querySelectorAll('.card-badge.new').length;
-  document.getElementById('statTotal').textContent = document.querySelectorAll('.card').length;
-
   // ── FILTER PILLS ──
   let activeCategory = 'all';
   function setPill(el, cat) {
@@ -514,19 +392,10 @@
       const cat   = card.dataset.category;
       const matchSearch = title.includes(query);
       const matchCat    = activeCategory === 'all' || cat === activeCategory;
-      if (matchSearch && matchCat) {
-        card.style.display = ''; visible++;
-      } else {
-        card.style.display = 'none';
-      }
+      if (matchSearch && matchCat) { card.style.display = ''; visible++; }
+      else { card.style.display = 'none'; }
     });
     document.getElementById('emptyState').style.display = visible === 0 ? 'block' : 'none';
-  }
-
-  // ── OPEN FORM ──
-  // Each button calls its own Apps Script function
-  function openForm(fnName) {
-    google.script.run[fnName]();
   }
 </script>
 </body>
