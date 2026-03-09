@@ -452,6 +452,12 @@ function getRows() {
 async function saveAsPDF() {
   document.querySelectorAll('.cal-popup').forEach(p => p.remove());
   document.getElementById('msDropdown').classList.remove('open');
+
+  // DEBUG — remove after confirming data is correct
+  const debugRows = getRows();
+  alert('DEBUG: ' + debugRows.length + ' rows found.\n\n' +
+    (debugRows[0] ? 'Row 1: ' + JSON.stringify(debugRows[0]) : 'NO ROWS FOUND'));
+
   const data = {
     docNo: document.getElementById('docNo').value,
     system: document.getElementById('system').value,
