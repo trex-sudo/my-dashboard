@@ -71,7 +71,7 @@ function getTechnicians() {
 function getInstruments(sheetName) {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
   if (!sheet) return [];
-  return sheet.getDataRange().getValues().slice(1)
+  return sheet.getDataRange().getValues().slice(11)
     .filter(r => r[0] !== '')
     .map(r => ({ item: r[0], device: r[1], serial: r[2], meas: r[3], qty: r[4] }));
 }
