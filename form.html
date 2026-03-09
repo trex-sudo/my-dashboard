@@ -377,6 +377,7 @@ function buildTable(instruments) {
   }
   instruments.forEach(inst => {
     const tr = document.createElement('tr');
+    tr.setAttribute('data-instrument', 'true');
     tr.innerHTML = `
       <td class="td-item">${inst.item}</td>
       <td class="td-text"><input type="text" class="td-left" value="${inst.device || ''}" /></td>
@@ -413,10 +414,8 @@ document.querySelector('.card-category') && (document.querySelector('.card-categ
 // ── GET ROW DATA ──
 function getRows() {
   const rows = [];
-  document.querySelectorAll('#checklistBody tr').forEach((tr) => {
-    // Only process actual instrument rows — must have the numbered .td-item cell
+  document.querySelectorAll('#checklistBody tr[data-instrument="true"]').forEach((tr) => {
     const itemCell = tr.querySelector('.td-item');
-    if (!itemCell) return;
 
     // Get all tds in order: [item, device, serial, meas, qty, chk1..chk6, remarks]
     const tds = tr.querySelectorAll('td');
