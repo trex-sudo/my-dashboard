@@ -410,24 +410,33 @@ gasGet('getInstruments', { sheet: SHEET_NAME })
 document.querySelector('.doc-main-title').textContent = 'MAINTENANCE DATA SHEET - ROUTINE CHECKLIST';
 document.querySelector('.card-category') && (document.querySelector('.card-category').textContent = FORM_TITLE);
 
-// ── GET ROW DATA — FIX: only read rows with a .td-item cell (numbered rows only) ──
+// ── GET ROW DATA ──
 function getRows() {
   const rows = [];
   document.querySelectorAll('#checklistBody tr').forEach((tr) => {
-    // Only process actual instrument rows — skip header/label/loading rows
+    // Only process actual instrument rows — must have the numbered .td-item cell
     const itemCell = tr.querySelector('.td-item');
     if (!itemCell) return;
 
-    const inputs = tr.querySelectorAll('input[type="text"]');
+    // Get all tds in order: [item, device, serial, meas, qty, chk1..chk6, remarks]
+    const tds = tr.querySelectorAll('td');
     const checks = tr.querySelectorAll('input[type="checkbox"]');
     const remarks = tr.querySelector('textarea');
 
+    // Read text inputs by their td index — td[1]=device, td[2]=serial, td[3]=meas, td[4]=qty
+    function tdVal(index) {
+      const td = tds[index];
+      if (!td) return '';
+      const input = td.querySelector('input[type="text"]');
+      return input ? input.value : td.textContent.trim();
+    }
+
     rows.push({
       itemNo:             itemCell.textContent.trim(),
-      device:             inputs[0]?.value || '',
-      serial:             inputs[1]?.value || '',
-      meas:               inputs[2]?.value || '',
-      qty:                inputs[3]?.value || '',
+      device:             tdVal(1),
+      serial:             tdVal(2),
+      meas:               tdVal(3),
+      qty:                tdVal(4),
       inspectTermination: checks[0]?.checked || false,
       retightening:       checks[1]?.checked || false,
       cleaningDisplay:    checks[2]?.checked || false,
