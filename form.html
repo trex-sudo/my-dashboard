@@ -263,22 +263,42 @@
 // ─────────────────────────────────────────────────────────────
 const APPS_SCRIPT_URL = 'YOUR_DEPLOYED_WEB_APP_URL_HERE';
 
+// ── READ URL PARAMS — sheet tab name and form title passed from dashboard ──
+const _params = new URLSearchParams(window.location.search);
+const SHEET_NAME = _params.get('sheet') || 'Feedwater System';
+const FORM_TITLE = _params.get('title') || 'I&C Routine Checklist — Feedwater System';
+
 // ── FETCH HELPERS ──
+// Apps Script Web Apps redirect /exec → /exec?... so we must follow redirects
+// and avoid setting Content-Type headers that trigger CORS preflight.
+
 async function gasGet(action, params = {}) {
   const qs = new URLSearchParams({ action, ...params }).toString();
-  const res = await fetch(`${APPS_SCRIPT_URL}?${qs}`);
-  const json = await res.json();
+  const res = await fetch(`${APPS_SCRIPT_URL}?${qs}`, {
+    redirect: 'follow',
+    mode: 'cors'
+  });
+  const text = await res.text();
+  let json;
+  try { json = JSON.parse(text); }
+  catch(e) { throw new Error('Response was not JSON. Check your Web App URL and deployment settings.'); }
   if (!json.ok) throw new Error(json.error || 'Unknown error');
   return json.data;
 }
 
 async function gasPost(data) {
+  // Send as text/plain to avoid CORS preflight — Apps Script reads via e.postData.contents
   const res = await fetch(APPS_SCRIPT_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    redirect: 'follow',
+    mode: 'cors',
+    headers: { 'Content-Type': 'text/plain' },
     body: JSON.stringify(data)
   });
-  const json = await res.json();
+  const text = await res.text();
+  let json;
+  try { json = JSON.parse(text); }
+  catch(e) { throw new Error('Response was not JSON. Check your Web App URL and deployment settings.'); }
   if (!json.ok) throw new Error(json.error || 'Unknown error');
   return json;
 }
@@ -385,12 +405,16 @@ function buildTable(instruments) {
     tbody.appendChild(tr);
   });
 }
-gasGet('getInstruments', { sheet: 'Feedwater System' })
+gasGet('getInstruments', { sheet: SHEET_NAME })
   .then(buildTable)
   .catch(err => {
     document.getElementById('checklistBody').innerHTML =
       '<tr class="loading-row"><td colspan="12" style="color:#c06010;">⚠️ Could not load: ' + err.message + '</td></tr>';
   });
+
+// ── SET FORM TITLE DYNAMICALLY ──
+document.querySelector('.doc-main-title').textContent = 'MAINTENANCE DATA SHEET - ROUTINE CHECKLIST';
+document.querySelector('.card-category') && (document.querySelector('.card-category').textContent = FORM_TITLE);
 
 // ── GET ROW DATA ──
 function getRows() {
