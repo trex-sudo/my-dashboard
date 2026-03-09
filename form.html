@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+ <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8"/>
@@ -414,15 +415,13 @@ document.querySelector('.card-category') && (document.querySelector('.card-categ
 // ── GET ROW DATA ──
 function getRows() {
   const rows = [];
-  document.querySelectorAll('#checklistBody tr[data-instrument="true"]').forEach((tr) => {
-    const itemCell = tr.querySelector('.td-item');
-
-    // Get all tds in order: [item, device, serial, meas, qty, chk1..chk6, remarks]
+  // ONLY select rows explicitly marked as instrument rows by buildTable()
+  const instrumentRows = document.querySelectorAll('#checklistBody tr[data-instrument="true"]');
+  instrumentRows.forEach((tr) => {
     const tds = tr.querySelectorAll('td');
     const checks = tr.querySelectorAll('input[type="checkbox"]');
     const remarks = tr.querySelector('textarea');
 
-    // Read text inputs by their td index — td[1]=device, td[2]=serial, td[3]=meas, td[4]=qty
     function tdVal(index) {
       const td = tds[index];
       if (!td) return '';
@@ -430,8 +429,12 @@ function getRows() {
       return input ? input.value : td.textContent.trim();
     }
 
+    const itemNo = tds[0] ? tds[0].textContent.trim() : '';
+    // Extra guard: skip if itemNo is not a number
+    if (!itemNo || isNaN(itemNo)) return;
+
     rows.push({
-      itemNo:             itemCell.textContent.trim(),
+      itemNo,
       device:             tdVal(1),
       serial:             tdVal(2),
       meas:               tdVal(3),
@@ -452,12 +455,6 @@ function getRows() {
 async function saveAsPDF() {
   document.querySelectorAll('.cal-popup').forEach(p => p.remove());
   document.getElementById('msDropdown').classList.remove('open');
-
-  // DEBUG — remove after confirming data is correct
-  const debugRows = getRows();
-  alert('DEBUG: ' + debugRows.length + ' rows found.\n\n' +
-    (debugRows[0] ? 'Row 1: ' + JSON.stringify(debugRows[0]) : 'NO ROWS FOUND'));
-
   const data = {
     docNo: document.getElementById('docNo').value,
     system: document.getElementById('system').value,
