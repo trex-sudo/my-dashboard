@@ -1,3 +1,4 @@
+
 // ─────────────────────────────────────────────────────────────
 // DMCI POWER - MAINTENANCE FORMS PORTAL
 // Google Apps Script — Code.gs
@@ -149,7 +150,12 @@ function saveAsPDF(data) {
     cell.setPaddingTop(2).setPaddingBottom(2).setPaddingLeft(3).setPaddingRight(3);
   });
 
-  (data.rows || []).forEach(function(row, idx) {
+  // Only process rows where itemNo is a number — filters out any header/label rows
+  const instrumentRows = (data.rows || []).filter(function(row) {
+    return row.itemNo && !isNaN(String(row.itemNo).trim());
+  });
+
+  instrumentRows.forEach(function(row, idx) {
 
     const tr = table.appendTableRow();
     const bg = (idx % 2 === 0) ? '#ffffff' : '#f5f7fb';
