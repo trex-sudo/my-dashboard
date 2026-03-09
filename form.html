@@ -412,7 +412,7 @@ function collectRows() {
     const remarks = tr.querySelector('textarea');
     const itemNo = tds[0] ? tds[0].textContent.trim() : '';
     if (!itemNo) return;
-    const getVal = (i) => { const inp = tds[i] && tds[i].querySelector('input[type="text"]'); return inp ? inp.value : ''; };
+    const getVal = (i) => { const inp = tds[i] && tds[i].querySelector('input[type="number"]'); return inp ? inp.value : ''; };
     rows.push({
       itemNo,
       device:             getVal(1),
@@ -504,5 +504,6 @@ function clearAll() {
 </script>
 </body>
 </html>
+
 
 
