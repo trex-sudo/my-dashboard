@@ -51,6 +51,7 @@ function doGet(e) {
 function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents);
+    Logger.log('Rows received: ' + (data.rows ? data.rows.length : 0));
     const result = saveAsPDF(data);
     return corsResponse({ ok: true, ...result });
   } catch (err) {
@@ -79,7 +80,8 @@ function getInstruments(sheetName) {
 function saveAsPDF(data) {
   if (!data || !data.rows) throw new Error('No form data received.');
 
-  function chk(val) { return val ? '\u2713' : ''; }
+  // FIX 1: Use ☑/☐ so unchecked boxes are still visible in the PDF
+  function chk(val) { return val ? '\u2611' : '\u2610'; }
 
   const docName = 'DMCI_TEMP_' + new Date().getTime();
   const doc = DocumentApp.create(docName);
@@ -133,6 +135,7 @@ function saveAsPDF(data) {
   const table = body.appendTable();
   table.setBorderWidth(1);
 
+  // Header row
   const hRow = table.appendTableRow();
   headers.forEach(function(h) {
     const cell = hRow.appendTableCell(h);
@@ -141,10 +144,15 @@ function saveAsPDF(data) {
     txt.setForegroundColor('#ffffff');
     txt.setBold(true);
     txt.setFontSize(7);
+    // FIX 2: Center-align all header cells
+    cell.getChild(0).asParagraph().setAlignment(DocumentApp.HorizontalAlignment.CENTER);
     cell.setPaddingTop(2).setPaddingBottom(2).setPaddingLeft(3).setPaddingRight(3);
   });
 
-  data.rows.forEach(function(row, idx) {
+  // FIX 3: Guard against empty rows array, skip rows with no meaningful data
+  (data.rows || []).forEach(function(row, idx) {
+    if (!row.device && !row.serial && !row.meas && !row.qty) return;
+
     const tr = table.appendTableRow();
     const bg = (idx % 2 === 0) ? '#ffffff' : '#f5f7fb';
     const cells = [
@@ -153,10 +161,15 @@ function saveAsPDF(data) {
       chk(row.inspectTermination), chk(row.retightening), chk(row.cleaningDisplay),
       chk(row.localDisplay), chk(row.calibration), chk(row.photoDevice), row.remarks || ''
     ];
-    cells.forEach(function(val) {
+
+    cells.forEach(function(val, colIdx) {
       const cell = tr.appendTableCell(val);
       cell.setBackgroundColor(bg);
       cell.editAsText().setFontSize(7);
+      // FIX 4: Center-align checkbox columns (indices 5–10) and item no (0)
+      if (colIdx === 0 || (colIdx >= 5 && colIdx <= 10)) {
+        cell.getChild(0).asParagraph().setAlignment(DocumentApp.HorizontalAlignment.CENTER);
+      }
       cell.setPaddingTop(2).setPaddingBottom(2).setPaddingLeft(3).setPaddingRight(3);
     });
   });
@@ -229,3 +242,4 @@ function testPDF() {
     Logger.log('ERROR: ' + e.message);
   }
 }
+
