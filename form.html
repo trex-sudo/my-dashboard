@@ -250,34 +250,21 @@
 </div>
 
 <div class="btn-row">
-  <button class="btn-pdf" onclick="saveAsPDF()">💾 SAVE TO DRIVE</button>
+  <button class="btn-pdf" id="btnSave" onclick="saveAsPDF()">💾 SAVE TO DRIVE</button>
   <button class="btn-clear" onclick="clearAll()">✕ CLEAR</button>
 </div>
 <div class="error-msg" id="errorMsg"></div>
 
 <script>
-// ─────────────────────────────────────────────────────────────
-// ⚠️  STEP 1: Paste your deployed Apps Script Web App URL here
-//     In Apps Script: Deploy → New Deployment → Web App
-//     Execute as: Me  |  Who has access: Anyone
-// ─────────────────────────────────────────────────────────────
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxQvtjBbbhx_FTkbNVxY_wU4K5oqR5xb6xXQ0I5-lEf5fTkAXXmQiN1im2elrveGKAf/exec';
 
-// ── READ URL PARAMS — sheet tab name and form title passed from dashboard ──
 const _params = new URLSearchParams(window.location.search);
 const SHEET_NAME = _params.get('sheet') || 'Feedwater System';
 const FORM_TITLE = _params.get('title') || 'I&C Routine Checklist — Feedwater System';
 
-// ── FETCH HELPERS ──
-// Apps Script Web Apps redirect /exec → /exec?... so we must follow redirects
-// and avoid setting Content-Type headers that trigger CORS preflight.
-
 async function gasGet(action, params = {}) {
   const qs = new URLSearchParams({ action, ...params }).toString();
-  const res = await fetch(`${APPS_SCRIPT_URL}?${qs}`, {
-    redirect: 'follow',
-    mode: 'cors'
-  });
+  const res = await fetch(`${APPS_SCRIPT_URL}?${qs}`, { redirect: 'follow', mode: 'cors' });
   const text = await res.text();
   let json;
   try { json = JSON.parse(text); }
@@ -287,11 +274,8 @@ async function gasGet(action, params = {}) {
 }
 
 async function gasPost(data) {
-  // Send as text/plain to avoid CORS preflight — Apps Script reads via e.postData.contents
   const res = await fetch(APPS_SCRIPT_URL, {
-    method: 'POST',
-    redirect: 'follow',
-    mode: 'cors',
+    method: 'POST', redirect: 'follow', mode: 'cors',
     headers: { 'Content-Type': 'text/plain' },
     body: JSON.stringify(data)
   });
@@ -380,6 +364,10 @@ gasGet('getTechnicians')
   .catch(() => buildDropdown(['Tech A', 'Tech B', 'Tech C']));
 
 // ── LOAD INSTRUMENTS ──
+// Disable save button until instruments are loaded
+document.getElementById('btnSave').disabled = true;
+document.getElementById('btnSave').style.opacity = '0.6';
+
 function buildTable(instruments) {
   const tbody = document.getElementById('checklistBody');
   tbody.innerHTML = '';
@@ -404,30 +392,50 @@ function buildTable(instruments) {
       <td><textarea placeholder="Remarks..."></textarea></td>`;
     tbody.appendChild(tr);
   });
+
+  // Re-enable save button once instruments are loaded
+  document.getElementById('btnSave').disabled = false;
+  document.getElementById('btnSave').style.opacity = '1';
 }
+
 gasGet('getInstruments', { sheet: SHEET_NAME })
   .then(buildTable)
   .catch(err => {
     document.getElementById('checklistBody').innerHTML =
       '<tr class="loading-row"><td colspan="12" style="color:#c06010;">⚠️ Could not load: ' + err.message + '</td></tr>';
+    document.getElementById('btnSave').disabled = false;
+    document.getElementById('btnSave').style.opacity = '1';
   });
 
-// ── SET FORM TITLE DYNAMICALLY ──
 document.querySelector('.doc-main-title').textContent = 'MAINTENANCE DATA SHEET - ROUTINE CHECKLIST';
 document.querySelector('.card-category') && (document.querySelector('.card-category').textContent = FORM_TITLE);
 
-// ── GET ROW DATA ──
+// ── GET ROW DATA — FIX: only read rows with a .td-item cell (numbered rows only) ──
 function getRows() {
   const rows = [];
-  document.querySelectorAll('#checklistBody tr').forEach((tr, i) => {
+  document.querySelectorAll('#checklistBody tr').forEach((tr) => {
+    // Only process actual instrument rows — skip header/label/loading rows
+    const itemCell = tr.querySelector('.td-item');
+    if (!itemCell) return;
+
     const inputs = tr.querySelectorAll('input[type="text"]');
     const checks = tr.querySelectorAll('input[type="checkbox"]');
     const remarks = tr.querySelector('textarea');
-    if (!inputs.length) return;
-    rows.push({ itemNo: i+1, device: inputs[0].value, serial: inputs[1].value, meas: inputs[2].value, qty: inputs[3].value,
-      inspectTermination: checks[0].checked, retightening: checks[1].checked, cleaningDisplay: checks[2].checked,
-      localDisplay: checks[3].checked, calibration: checks[4].checked, photoDevice: checks[5].checked,
-      remarks: remarks ? remarks.value : '' });
+
+    rows.push({
+      itemNo:             itemCell.textContent.trim(),
+      device:             inputs[0]?.value || '',
+      serial:             inputs[1]?.value || '',
+      meas:               inputs[2]?.value || '',
+      qty:                inputs[3]?.value || '',
+      inspectTermination: checks[0]?.checked || false,
+      retightening:       checks[1]?.checked || false,
+      cleaningDisplay:    checks[2]?.checked || false,
+      localDisplay:       checks[3]?.checked || false,
+      calibration:        checks[4]?.checked || false,
+      photoDevice:        checks[5]?.checked || false,
+      remarks:            remarks ? remarks.value : ''
+    });
   });
   return rows;
 }
@@ -437,15 +445,21 @@ async function saveAsPDF() {
   document.querySelectorAll('.cal-popup').forEach(p => p.remove());
   document.getElementById('msDropdown').classList.remove('open');
   const data = {
-    docNo: document.getElementById('docNo').value, system: document.getElementById('system').value,
-    dateScheduled: document.getElementById('dateScheduled').value, datePerformed: document.getElementById('datePerformed').value,
-    siteLocation: document.getElementById('siteLocation').value, manpower: selectedTechs.join(', '),
-    preparedBy: document.getElementById('preparedBy').value, preparedDate: document.getElementById('preparedDate').value,
-    checkedBy: document.getElementById('checkedBy').value, checkedDate: document.getElementById('checkedDate').value,
-    approvedBy: document.getElementById('approvedBy').value, approvedDate: document.getElementById('approvedDate').value,
+    docNo: document.getElementById('docNo').value,
+    system: document.getElementById('system').value,
+    dateScheduled: document.getElementById('dateScheduled').value,
+    datePerformed: document.getElementById('datePerformed').value,
+    siteLocation: document.getElementById('siteLocation').value,
+    manpower: selectedTechs.join(', '),
+    preparedBy: document.getElementById('preparedBy').value,
+    preparedDate: document.getElementById('preparedDate').value,
+    checkedBy: document.getElementById('checkedBy').value,
+    checkedDate: document.getElementById('checkedDate').value,
+    approvedBy: document.getElementById('approvedBy').value,
+    approvedDate: document.getElementById('approvedDate').value,
     rows: getRows()
   };
-  const btn = document.querySelector('.btn-pdf');
+  const btn = document.getElementById('btnSave');
   btn.textContent = '⏳ Saving to Drive...'; btn.disabled = true;
   try {
     const result = await gasPost(data);
@@ -477,4 +491,3 @@ function clearAll() {
 </script>
 </body>
 </html>
-
