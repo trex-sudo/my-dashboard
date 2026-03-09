@@ -149,9 +149,7 @@ function saveAsPDF(data) {
     cell.setPaddingTop(2).setPaddingBottom(2).setPaddingLeft(3).setPaddingRight(3);
   });
 
-  // FIX 3: Guard against empty rows array, skip rows with no meaningful data
   (data.rows || []).forEach(function(row, idx) {
-    if (!row.device && !row.serial && !row.meas && !row.qty) return;
 
     const tr = table.appendTableRow();
     const bg = (idx % 2 === 0) ? '#ffffff' : '#f5f7fb';
@@ -242,4 +240,3 @@ function testPDF() {
     Logger.log('ERROR: ' + e.message);
   }
 }
-
