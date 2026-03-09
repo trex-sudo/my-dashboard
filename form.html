@@ -1,5 +1,4 @@
-
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8"/>
@@ -372,13 +371,17 @@ document.getElementById('btnSave').style.opacity = '0.6';
 function buildTable(instruments) {
   const tbody = document.getElementById('checklistBody');
   tbody.innerHTML = '';
+  window._instrumentRows = [];
+
   if (!instruments || instruments.length === 0) {
     tbody.innerHTML = '<tr class="loading-row"><td colspan="12" style="color:#c06010;">⚠️ No instruments found in Feedwater System tab.</td></tr>';
     return;
   }
-  instruments.forEach(inst => {
+
+  instruments.forEach((inst, idx) => {
     const tr = document.createElement('tr');
     tr.setAttribute('data-instrument', 'true');
+    tr.setAttribute('data-idx', idx);
     tr.innerHTML = `
       <td class="td-item">${inst.item}</td>
       <td class="td-text"><input type="text" class="td-left" value="${inst.device || ''}" /></td>
@@ -400,6 +403,34 @@ function buildTable(instruments) {
   document.getElementById('btnSave').style.opacity = '1';
 }
 
+// Called just before save — reads current DOM state of instrument rows only
+function collectRows() {
+  const rows = [];
+  document.querySelectorAll('#checklistBody tr[data-instrument="true"]').forEach((tr) => {
+    const tds = tr.querySelectorAll('td');
+    const checks = tr.querySelectorAll('input[type="checkbox"]');
+    const remarks = tr.querySelector('textarea');
+    const itemNo = tds[0] ? tds[0].textContent.trim() : '';
+    if (!itemNo) return;
+    const getVal = (i) => { const inp = tds[i] && tds[i].querySelector('input[type="text"]'); return inp ? inp.value : ''; };
+    rows.push({
+      itemNo,
+      device:             getVal(1),
+      serial:             getVal(2),
+      meas:               getVal(3),
+      qty:                getVal(4),
+      inspectTermination: checks[0] ? checks[0].checked : false,
+      retightening:       checks[1] ? checks[1].checked : false,
+      cleaningDisplay:    checks[2] ? checks[2].checked : false,
+      localDisplay:       checks[3] ? checks[3].checked : false,
+      calibration:        checks[4] ? checks[4].checked : false,
+      photoDevice:        checks[5] ? checks[5].checked : false,
+      remarks:            remarks ? remarks.value : ''
+    });
+  });
+  return rows;
+}
+
 gasGet('getInstruments', { sheet: SHEET_NAME })
   .then(buildTable)
   .catch(err => {
@@ -414,42 +445,13 @@ document.querySelector('.card-category') && (document.querySelector('.card-categ
 
 // ── GET ROW DATA ──
 function getRows() {
-  const rows = [];
-  // ONLY select rows explicitly marked as instrument rows by buildTable()
-  const instrumentRows = document.querySelectorAll('#checklistBody tr[data-instrument="true"]');
-  instrumentRows.forEach((tr) => {
-    const tds = tr.querySelectorAll('td');
-    const checks = tr.querySelectorAll('input[type="checkbox"]');
-    const remarks = tr.querySelector('textarea');
-
-    function tdVal(index) {
-      const td = tds[index];
-      if (!td) return '';
-      const input = td.querySelector('input[type="text"]');
-      return input ? input.value : td.textContent.trim();
-    }
-
-    const itemNo = tds[0] ? tds[0].textContent.trim() : '';
-    // Extra guard: skip if itemNo is not a number
-    if (!itemNo || isNaN(itemNo)) return;
-
-    rows.push({
-      itemNo,
-      device:             tdVal(1),
-      serial:             tdVal(2),
-      meas:               tdVal(3),
-      qty:                tdVal(4),
-      inspectTermination: checks[0]?.checked || false,
-      retightening:       checks[1]?.checked || false,
-      cleaningDisplay:    checks[2]?.checked || false,
-      localDisplay:       checks[3]?.checked || false,
-      calibration:        checks[4]?.checked || false,
-      photoDevice:        checks[5]?.checked || false,
-      remarks:            remarks ? remarks.value : ''
-    });
-  });
-  return rows;
+  // Use the global instrumentData array populated by buildTable()
+  // This avoids DOM scraping entirely and is 100% reliable
+  return window._instrumentRows || [];
 }
+
+// Global store for instrument row data — populated by buildTable()
+window._instrumentRows = [];
 
 // ── SAVE TO DRIVE ──
 async function saveAsPDF() {
@@ -468,7 +470,7 @@ async function saveAsPDF() {
     checkedDate: document.getElementById('checkedDate').value,
     approvedBy: document.getElementById('approvedBy').value,
     approvedDate: document.getElementById('approvedDate').value,
-    rows: getRows()
+    rows: collectRows()
   };
   const btn = document.getElementById('btnSave');
   btn.textContent = '⏳ Saving to Drive...'; btn.disabled = true;
@@ -502,4 +504,5 @@ function clearAll() {
 </script>
 </body>
 </html>
+
 
